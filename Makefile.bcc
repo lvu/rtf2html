@@ -1,0 +1,40 @@
+# If you want do build debug version, you have to alter CFLAGS and LDFLAGS
+# definitions, and make _NDEBUG and NDEBUG undefined and __DEBUG__ defined
+# in config.h
+
+.autodepend
+APP_NAME=rtf2html
+CC=bcc32
+LINK=ilink32
+# Change to 
+# CFLAGS=-c -w-aus -w-inl -Od -v -y -R
+# for debug build
+CFLAGS=-c -w-aus -w-inl -O2 -6
+# Add /v for debug build
+LDFLAGS=/ap/Gn/c/x/Tpe
+# Uncomment this if you are using stlport, and change to the library you want
+LIBS=stlpst.lib
+
+all: $(APP_NAME).exe
+
+OBJS=rtf_table.obj fmt_opts.obj rtf_keyword.obj rtf_tools.obj rtf2html.obj
+
+$(APP_NAME).exe: $(OBJS)
+        $(LINK) $(LD_FLAGS) c0x32.OBJ $(OBJS), $(APP_NAME).exe,, CW32.LIB IMPORT32.LIB $(LIBS)
+
+.cpp.obj:
+        $(CC) -o$@ $(CFLAGS) $<
+                
+rtf_table.obj: rtf_table.cpp
+
+rtf_keyword.obj : rtf_keyword.cpp
+
+fmt_opts.obj: fmt_opts.cpp
+
+rtf_tools.obj: rtf_tools.cpp
+
+rtf2html.obj: rtf2html.cpp
+
+clean:
+        if "%OS%"=="Windows_NT" del /q *.obj $(APP_NAME).exe *.il* *.tds *.map
+        if not "%OS%"=="Windows_NT" deltree /y *.obj $(APP_NAME).exe *.il* *.tds *.map
