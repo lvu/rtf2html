@@ -161,10 +161,12 @@ int main(int argc, char **argv)
             {
                switch (kw.keyword())
                {
-               case rtf_keyword::rkw_fonttbl: case rtf_keyword::rkw_filetbl: case rtf_keyword::rkw_stylesheet:
-               case rtf_keyword::rkw_info:
-               case rtf_keyword::rkw_colortbl: case rtf_keyword::rkw_header: case rtf_keyword::rkw_footer:
-               case rtf_keyword::rkw_headerf: case rtf_keyword::rkw_footerf:
+               case rtf_keyword::rkw_fonttbl: case rtf_keyword::rkw_filetbl: 
+               case rtf_keyword::rkw_stylesheet: case rtf_keyword::rkw_info:
+               case rtf_keyword::rkw_colortbl: case rtf_keyword::rkw_header: 
+               case rtf_keyword::rkw_footer: case rtf_keyword::rkw_headerf: 
+               case rtf_keyword::rkw_footerf: case rtf_keyword::rkw_pict:
+               case rtf_keyword::rkw_object:
                   // we'll skip such groups
                   skip_group(buf_in);
                   break;
@@ -489,14 +491,14 @@ int main(int argc, char **argv)
          par_html+=*buf_in++;
       }
    }
-   file_out<<"<div style=\"width:";
+   file_out<<"<html><head></head><body><div style=\"width:";
    file_out<<rint((iDocWidth/20));
    file_out<<"pt;";
    file_out<<"padding-left=";
    file_out<<rint(iMarginLeft/20);
    file_out<<"pt\">";
    file_out<<html;
-   file_out<<"</div>";
+   file_out<<"</div></body></html>";
    if (argc>1)
       delete p_file_in;
    if (argc>2)

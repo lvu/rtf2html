@@ -38,9 +38,11 @@ rtf_keyword::keyword_map::keyword_map() : base_class()
    insert(value_type("line", rkw_line));
    insert(value_type("lquote", rkw_lquote));
    insert(value_type("margl", rkw_margl));
+   insert(value_type("object", rkw_object));
    insert(value_type("paperw", rkw_paperw));
    insert(value_type("par", rkw_par));
    insert(value_type("pard", rkw_pard));
+   insert(value_type("pict", rkw_pict));
    insert(value_type("plain", rkw_plain));
    insert(value_type("qc", rkw_qc));
    insert(value_type("qj", rkw_qj));
