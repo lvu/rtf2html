@@ -8,13 +8,13 @@
 #define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the `stdc++' library (-lstdc++). */
-#define HAVE_LIBSTDC__ 1
+/* #undef HAVE_LIBSTDC__ */
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
 
 /* Define to 1 if you have rint function */
-/* #undef HAVE_RINT */
+#define HAVE_RINT 1
 
 /* Define to 1 if stdbool.h conforms to C99. */
 #define HAVE_STDBOOL_H 1

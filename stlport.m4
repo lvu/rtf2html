@@ -14,7 +14,7 @@
 # library defaults to stlport, and can be overridden with the 
 # --with-stlport-libs directive
 #
-#   $Id: stlport.m4,v 1.1 2006-01-20 11:15:36 vlavrinenko Exp $
+#   $Id: stlport.m4,v 1.3 2006-02-15 12:15:42 vlavrinenko Exp $
 #
 #   This file is (c) 2001 Jasper Spaans, <jasper@spaans.ds9a.nl> 
 #   Please send your comments, suggestions and bugfixes to the above
@@ -70,6 +70,9 @@ AC_DEFUN([AC_LIB_STLPORT],
     ac_stlport_save_LIBS="$LIBS"
     CPPFLAGS="-I$ac_stlport_headers $CPPFLAGS"
     LIBS="-l$ac_stlport_libs $LIBS"
+    if test "$MSYSTEM" == "MINGW32"; then
+      CPPFLAGS="$CPPFLAGS -mthreads"
+    fi
     AC_LANG_PUSH(C++)
     AC_TRY_COMPILE([#include <stl/_config.h>],,
 

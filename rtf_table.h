@@ -43,7 +43,7 @@ class killing_ptr_vector : public std::vector<T*>
  public:
    ~killing_ptr_vector()
    {
-      for (typename killing_ptr_vector<T>::iterator i=begin(); i!=end(); ++i)
+      for (typename killing_ptr_vector<T>::iterator i=this->begin(); i!=this->end(); ++i)
          delete *i;
    }
 };
