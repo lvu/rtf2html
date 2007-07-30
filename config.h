@@ -8,7 +8,7 @@
 #define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the `stdc++' library (-lstdc++). */
-/* #undef HAVE_LIBSTDC__ */
+#define HAVE_LIBSTDC__ 1
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
@@ -59,19 +59,19 @@
 #define PACKAGE_NAME "rtf2html"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "rtf2html 0.1.1"
+#define PACKAGE_STRING "rtf2html 0.2.0"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "rtf2html"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.1.1"
+#define PACKAGE_VERSION "0.2.0"
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
 
 /* Version number of package */
-#define VERSION "0.1.1"
+#define VERSION "0.2.0"
 
 /* Define to 1 for debug version */
 /* #undef _DEBUG */

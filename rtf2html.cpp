@@ -95,10 +95,11 @@ int main(int argc, char **argv)
       str_in.push_back(*f_buf_in);
    std::string::iterator buf_in=str_in.begin(), buf_in_end=str_in.end();
 
-   std::string html, par_html;
    bool bAsterisk=false;
    fo_stack foStack;
-   formatting_options cur_options, new_options;
+   formatting_options cur_options;
+   std::string html;
+   html_text par_html(cur_options);
 
    /* CellDefs in rtf are really queer. We'll keep a list of them in main()
       and will give an iterator into this list to a row */
@@ -109,6 +110,7 @@ int main(int argc, char **argv)
    table_row *trCurRow=new table_row;
    table *tblCurTable=new table;
    int iLastRowLeft=0, iLastRowHeight=0;
+   std::string t_str;
 
    bool bInTable=false;
    int iDocWidth=12240;
@@ -124,7 +126,7 @@ int main(int argc, char **argv)
             switch (kw.control_char())
             {
             case '\\': case '{': case '}':
-               par_html+=kw.control_char();
+               par_html.write(kw.control_char());
                break;
             case '\'':
             {
@@ -134,13 +136,13 @@ int main(int argc, char **argv)
                switch (code)
                {
                   case 167:
-                     par_html+="&bull;";
+                     par_html.write("&bull;");
                      break;
                   case 188:
-                     par_html+="&hellip;";
+                     par_html.write("&hellip;");
                      break;
                   default:
-                     par_html+=(char)code;
+                     par_html.write((char)code);
                }
                break;
             }
@@ -148,7 +150,7 @@ int main(int argc, char **argv)
                bAsterisk=true;
                break;
             case '~':
-               par_html+="&nbsp;";
+               par_html.write("&nbsp;");
                break;
             }
          else //kw.is_control_char
@@ -172,37 +174,37 @@ int main(int argc, char **argv)
                   break;
                // special characters
                case rtf_keyword::rkw_line: case rtf_keyword::rkw_softline:
-                  par_html+="<br>";
+                  par_html.write("<br>");
                   break;
                case rtf_keyword::rkw_tab:
-                  par_html+="&nbsp;&nbsp;";  // maybe, this can be done better
+                  par_html.write("&nbsp;&nbsp;");  // maybe, this can be done better
                   break;
                case rtf_keyword::rkw_enspace: case rtf_keyword::rkw_emspace:
-                  par_html+="&nbsp;";
+                  par_html.write("&nbsp;");
                   break;
                case rtf_keyword::rkw_qmspace:
-                  par_html+="&thinsp;";
+                  par_html.write("&thinsp;");
                   break;
                case rtf_keyword::rkw_endash:
-                  par_html+="&ndash;";
+                  par_html.write("&ndash;");
                   break;
                case rtf_keyword::rkw_emdash:
-                  par_html+="&mdash;";
+                  par_html.write("&mdash;");
                   break;
                case rtf_keyword::rkw_bullet:
-                  par_html+="&bull;";
+                  par_html.write("&bull;");
                   break;
                case rtf_keyword::rkw_lquote:
-                  par_html+="&lsquo;";
+                  par_html.write("&lsquo;");
                   break;
                case rtf_keyword::rkw_rquote:
-                  par_html+="&rsquo;";
+                  par_html.write("&rsquo;");
                   break;
                case rtf_keyword::rkw_ldblquote:
-                  par_html+="&ldquo;";
+                  par_html.write("&ldquo;");
                   break;
                case rtf_keyword::rkw_rdblquote:
-                  par_html+="&rdquo;";
+                  par_html.write("&rdquo;");
                   break;
                // paragraph formatting 
                case rtf_keyword::rkw_ql:
@@ -240,99 +242,55 @@ int main(int argc, char **argv)
                   cur_options.papInTbl=false;
                   break;
                case rtf_keyword::rkw_par: case rtf_keyword::rkw_sect:
-                  par_html=cur_options.get_par_str()+par_html;
-                  if (cur_options.chpBold)
-                     par_html+="</b>";
-                  if (cur_options.chpItalic)
-                     par_html+="</i>";
-                  if (cur_options.chpUnderline)
-                     par_html+="</u>";
-                  if (cur_options.chpSup)
-                     par_html+="</sup>";
-                  if (cur_options.chpSub)
-                     par_html+="</sub>";
-                  par_html+="&nbsp;</p>";
+                  t_str=cur_options.get_par_str()+par_html.str()
+                        +"&nbsp;</span></p>\n";
                   if (!bInTable)
                   {
-                     html+=par_html;
+                     html+=t_str;
                   }
                   else 
                   {
                      if (cur_options.papInTbl)
                      {
-                        tcCurCell->Text+=par_html;
+                        tcCurCell->Text+=t_str;
                      }
                      else
                      {
-                        html+=tblCurTable->make()+par_html;
+                        html+=tblCurTable->make()+t_str;
                         bInTable=false;
                         delete tblCurTable;
                         tblCurTable=new table;
                      }
                   }
-                  par_html="";
-                  if (cur_options.chpBold)
-                     par_html+="<b>";
-                  if (cur_options.chpItalic)
-                     par_html+="<i>";
-                  if (cur_options.chpUnderline)
-                     par_html+="<u>";
-                  if (cur_options.chpSup)
-                     par_html+="<sup>";
-                  if (cur_options.chpSub)
-                     par_html+="<sub>";
-               break;
+                  par_html.clear();
+                  break;
                // character formatting
                case rtf_keyword::rkw_super:
                   cur_options.chpSup=!(kw.parameter()==0);
-                  insert_char_option(par_html, "sup", cur_options.chpSup);
                   break;
                case rtf_keyword::rkw_sub:
                   cur_options.chpSub=!(kw.parameter()==0);
-                  insert_char_option(par_html, "sub", cur_options.chpSub);
                   break;
                case rtf_keyword::rkw_b:
                   cur_options.chpBold=!(kw.parameter()==0);
-                  insert_char_option(par_html, "b", cur_options.chpBold);
                   break;
                case rtf_keyword::rkw_i:
                   cur_options.chpItalic=!(kw.parameter()==0);
-                  insert_char_option(par_html, "i", cur_options.chpItalic);
                   break;
                case rtf_keyword::rkw_ul:
                   cur_options.chpUnderline=!(kw.parameter()==0);
-                  insert_char_option(par_html, "u", cur_options.chpUnderline);
                   break;
                case rtf_keyword::rkw_ulnone:
                   cur_options.chpUnderline=false;
-                  insert_char_option(par_html, "u", cur_options.chpUnderline);
+                  break;
+               case rtf_keyword::rkw_fs:
+                  cur_options.chpFontSize=kw.parameter();
                   break;
                case rtf_keyword::rkw_plain:
-                  if (cur_options.chpBold)
-                  {
-                     cur_options.chpBold=false;
-                     insert_char_option(par_html, "b", false);
-                  }
-                  if (cur_options.chpItalic)
-                  {
-                     cur_options.chpItalic=false;
-                     insert_char_option(par_html, "i", false);
-                  }
-                  if (cur_options.chpUnderline)
-                  {
-                     cur_options.chpUnderline=false;
-                     insert_char_option(par_html, "u", false);
-                  }
-                  if (cur_options.chpSup)
-                  {
-                     cur_options.chpSup=false;
-                     insert_char_option(par_html, "sup", false);
-                  }
-                  if (cur_options.chpSub)
-                  {
-                     cur_options.chpSub=false;
-                     insert_char_option(par_html, "sub", false);
-                  }
+                  cur_options.chpBold=cur_options.chpItalic
+                  	=cur_options.chpUnderline=cur_options.chpSup
+                  	=cur_options.chpSub=false;
+                  cur_options.chpFontSize=0;
                   break;
                // table formatting
                case rtf_keyword::rkw_intbl:
@@ -355,30 +313,10 @@ int main(int argc, char **argv)
                   bInTable=true;
                   break;
                case rtf_keyword::rkw_cell:
-                  par_html=cur_options.get_par_str()+par_html;
-                  if (cur_options.chpBold)
-                     par_html+="</b>";
-                  if (cur_options.chpItalic)
-                     par_html+="</i>";
-                  if (cur_options.chpUnderline)
-                     par_html+="</u>";
-                  if (cur_options.chpSup)
-                     par_html+="</sup>";
-                  if (cur_options.chpSub)
-                     par_html+="</sub>";
-                  par_html+=+"</p>";
-                  tcCurCell->Text+=par_html;
-                  par_html="";
-                  if (cur_options.chpBold)
-                     par_html+="<b>";
-                  if (cur_options.chpItalic)
-                     par_html+="<i>";
-                  if (cur_options.chpUnderline)
-                     par_html+="<u>";
-                  if (cur_options.chpSup)
-                     par_html+="<sup>";
-                  if (cur_options.chpSub)
-                     par_html+="<sub>";
+                  t_str=cur_options.get_par_str()+par_html.str()
+                        +"&nbsp;</span></p>\n";
+                  tcCurCell->Text+=t_str;
+                  par_html.clear();
                   trCurRow->Cells.push_back(tcCurCell);
                   tcCurCell=new table_cell;
                   break;
@@ -450,45 +388,27 @@ int main(int argc, char **argv)
          break;
       case '}':
          // perform group closing actions here
-         new_options=foStack.top();
+         cur_options=foStack.top();
          foStack.pop();
-         if (cur_options.chpBold!=new_options.chpBold)
-         {
-            insert_char_option(par_html, "b", new_options.chpBold);
-         }
-         if (cur_options.chpItalic!=new_options.chpItalic)
-         {
-            insert_char_option(par_html, "i", new_options.chpItalic);
-         }
-         if (cur_options.chpUnderline!=new_options.chpUnderline)
-         {
-            insert_char_option(par_html, "u", new_options.chpUnderline);
-         }
-         if (cur_options.chpSup!=new_options.chpSup)
-         {
-            insert_char_option(par_html, "sup", new_options.chpSup);
-         }
-         if (cur_options.chpSub!=new_options.chpSub)
-         {
-            insert_char_option(par_html, "sub", new_options.chpSub);
-         }
-
-         memcpy(&cur_options, &new_options, sizeof(cur_options));
          ++buf_in;
          break;
       case 13: case 10:
          ++buf_in;
          break;
       case '<':
-         par_html+="&lt;";
+         par_html.write("&lt;");
          ++buf_in;
          break;
       case '>':
-         par_html+="&gt;";
+         par_html.write("&gt;");
+         ++buf_in;
+         break;
+      case ' ':
+         par_html.write("&ensp;");
          ++buf_in;
          break;
       default:
-         par_html+=*buf_in++;
+         par_html.write(*buf_in++);
       }
    }
    file_out<<"<html><head></head><body><div style=\"width:";

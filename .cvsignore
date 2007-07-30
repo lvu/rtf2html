@@ -1,0 +1,9 @@
+config.log
+config.status
+test
+.deps
+autom4te.cache
+*.o
+Makefile
+*.exe
+stamp-h1

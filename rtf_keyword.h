@@ -13,7 +13,7 @@ class rtf_keyword{
                       rkw_clvertalt, rkw_clvmgf, rkw_clvmrg, rkw_colortbl, 
                       rkw_emdash, rkw_emspace, rkw_endash, rkw_enspace,
                       rkw_fi, rkw_field, rkw_filetbl, 
-                      rkw_fldrslt, rkw_fonttbl, rkw_footer, rkw_footerf, 
+                      rkw_fldrslt, rkw_fonttbl, rkw_footer, rkw_footerf, rkw_fs,
                       rkw_header, rkw_headerf, 
                       rkw_i, rkw_info, rkw_intbl, 
                       rkw_ldblquote, rkw_li, rkw_line, rkw_lquote,

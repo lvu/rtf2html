@@ -5,8 +5,6 @@
 #include "common.h"
 #include "rtf_keyword.h"
 
-void insert_char_option(std::string &str, const std::string &opt, bool bSet);
-
 template <class InputIter>
 void skip_group(InputIter &iter);
 

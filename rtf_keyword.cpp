@@ -28,6 +28,7 @@ rtf_keyword::keyword_map::keyword_map() : base_class()
    insert(value_type("fonttbl", rkw_fonttbl));
    insert(value_type("footer", rkw_footer));
    insert(value_type("footerf", rkw_footerf));
+   insert(value_type("fs", rkw_fs));
    insert(value_type("header", rkw_header));
    insert(value_type("headerf", rkw_headerf));
    insert(value_type("i", rkw_i));

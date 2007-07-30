@@ -1,3 +1,9 @@
+Version 0.2.0 - 2007/07/29
+ - Fixed configure.in
+ - Rewokerd character formatting handling - it became less effective 
+   in terms of output size, but more conforming to XHTML standard 
+   (no cross-tags)
+ - Added font size support
 Version 0.1.1 - 2005/12/15
  - Fixed fields handling
  - Added handling for some special characters (dashes, ellipsis, etc.)

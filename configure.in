@@ -1,4 +1,4 @@
-AC_INIT(rtf2html, 0.1.1, vlavrinenko@users.sourceforge.net)
+AC_INIT(rtf2html, 0.2.0, vlavrinenko@users.sourceforge.net)
 AM_INIT_AUTOMAKE(dist-bzip2)
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_SRCDIR(rtf2html.cpp)
