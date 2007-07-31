@@ -94,6 +94,8 @@ int main(int argc, char **argv)
    for (; f_buf_in != f_buf_in_end ; ++f_buf_in)
       str_in.push_back(*f_buf_in);
    std::string::iterator buf_in=str_in.begin(), buf_in_end=str_in.end();
+   colorvect colortbl;
+   fontmap fonttbl;
 
    bool bAsterisk=false;
    fo_stack foStack;
@@ -163,15 +165,126 @@ int main(int argc, char **argv)
             {
                switch (kw.keyword())
                {
-               case rtf_keyword::rkw_fonttbl: case rtf_keyword::rkw_filetbl: 
+               case rtf_keyword::rkw_filetbl: 
                case rtf_keyword::rkw_stylesheet: case rtf_keyword::rkw_info:
-               case rtf_keyword::rkw_colortbl: case rtf_keyword::rkw_header: 
+               case rtf_keyword::rkw_header: 
                case rtf_keyword::rkw_footer: case rtf_keyword::rkw_headerf: 
                case rtf_keyword::rkw_footerf: case rtf_keyword::rkw_pict:
                case rtf_keyword::rkw_object:
                   // we'll skip such groups
                   skip_group(buf_in);
                   break;
+               // color table
+               case rtf_keyword::rkw_colortbl:
+               {
+                  color clr;
+                  while (*buf_in!='}')
+                  {
+                     switch (*buf_in)
+                     {
+                     case '\\':
+                     {
+                        rtf_keyword kw(++buf_in);
+                        switch (kw.keyword())
+                        {
+                        case rtf_keyword::rkw_red:
+                           clr.r=kw.parameter();
+                           break;
+                        case rtf_keyword::rkw_green:
+                           clr.g=kw.parameter();
+                           break;
+                        case rtf_keyword::rkw_blue:
+                           clr.b=kw.parameter();
+                           break;
+                        }
+                        break;
+                     }
+                     case ';':
+                        colortbl.push_back(clr);
+                        ++buf_in;
+                        break;
+                     default:
+                        ++buf_in;
+                        break;
+                     }
+                  }
+                  ++buf_in;
+                  break;
+               }
+               // font table
+               case rtf_keyword::rkw_fonttbl: 
+               {
+                  font fnt;
+                  int font_num;
+                  bool full_name=false;
+                  bool in_font=false;
+                  while (! (*buf_in=='}' && !in_font))
+                  {
+                     switch (*buf_in)
+                     {
+                     case '\\':
+                     {
+                        rtf_keyword kw(++buf_in);
+                        if (kw.is_control_char() && kw.control_char()=='*')
+                           skip_group(buf_in);
+                        else
+                           switch (kw.keyword())
+                           {
+                           case rtf_keyword::rkw_f:
+                              font_num=kw.parameter();
+                              break;
+                           case rtf_keyword::rkw_fprq:
+                              fnt.pitch=kw.parameter();
+                              break;
+                           case rtf_keyword::rkw_fcharset:
+                              fnt.charset=kw.parameter();
+                              break;
+                           case rtf_keyword::rkw_fnil:
+                              fnt.family=font::ff_none;
+                              break;
+                           case rtf_keyword::rkw_froman:
+                              fnt.family=font::ff_serif;
+                              break;
+                           case rtf_keyword::rkw_fswiss:
+                              fnt.family=font::ff_sans_serif;
+                              break;
+                           case rtf_keyword::rkw_fmodern:
+                              fnt.family=font::ff_monospace;
+                              break;
+                           case rtf_keyword::rkw_fscript:
+                              fnt.family=font::ff_cursive;
+                              break;
+                           case rtf_keyword::rkw_fdecor:
+                              fnt.family=font::ff_fantasy;
+                              break;
+                           }
+                        break;
+                     }
+                     case '{':
+                        in_font=true;
+                        ++buf_in;
+                        break;
+                     case '}':
+                        in_font=false;
+                        fonttbl.insert(std::make_pair(font_num, fnt));
+                        fnt=font();
+                        full_name=false;
+                        ++buf_in;
+                        break;
+                     case ';':
+                        full_name=true;
+                        ++buf_in;
+                        break;
+                     default:
+                        if (!full_name && in_font)
+                           fnt.name+=*buf_in;
+                        ++buf_in;
+                        break;
+                     }
+                  }
+                  ++buf_in;
+                  break;
+               }
                // special characters
                case rtf_keyword::rkw_line: case rtf_keyword::rkw_softline:
                   par_html.write("<br>");
@@ -286,11 +399,25 @@ int main(int argc, char **argv)
                case rtf_keyword::rkw_fs:
                   cur_options.chpFontSize=kw.parameter();
                   break;
+               case rtf_keyword::rkw_cf:
+                  cur_options.chpFColor=colortbl[kw.parameter()];
+                  break;
+               case rtf_keyword::rkw_cb:
+                  cur_options.chpBColor=colortbl[kw.parameter()];
+                  break;
+               case rtf_keyword::rkw_highlight:
+                  cur_options.chpHighlight=kw.parameter();
+                  break;
+               case rtf_keyword::rkw_f:
+                  cur_options.chpFont=fonttbl[kw.parameter()];
+                  break;
                case rtf_keyword::rkw_plain:
                   cur_options.chpBold=cur_options.chpItalic
                   	=cur_options.chpUnderline=cur_options.chpSup
                   	=cur_options.chpSub=false;
-                  cur_options.chpFontSize=0;
+                  cur_options.chpFontSize=cur_options.chpHighlight=0;
+                  cur_options.chpFColor=cur_options.chpBColor=color();
+                  cur_options.chpFont=font();
                   break;
                // table formatting
                case rtf_keyword::rkw_intbl:
@@ -403,15 +530,15 @@ int main(int argc, char **argv)
          par_html.write("&gt;");
          ++buf_in;
          break;
-      case ' ':
+/*      case ' ':
          par_html.write("&ensp;");
          ++buf_in;
-         break;
+         break;*/
       default:
          par_html.write(*buf_in++);
       }
    }
-   file_out<<"<html><head></head><body><div style=\"width:";
+   file_out<<"<html><head><STYLE type=\"text/css\">p {margin-top:0pt;margin-bottom:0pt}</STYLE></head><body><div style=\"width:";
    file_out<<rint((iDocWidth/20));
    file_out<<"pt;";
    file_out<<"padding-left=";

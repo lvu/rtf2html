@@ -3,10 +3,13 @@ rtf_keyword::keyword_map::keyword_map() : base_class()
 {
    insert(value_type("b", rkw_b));
    insert(value_type("bin", rkw_bin));
+   insert(value_type("blue", rkw_blue));
    insert(value_type("brdrnone", rkw_brdrnone));
    insert(value_type("bullet", rkw_bullet));
+   insert(value_type("cb", rkw_cb));
    insert(value_type("cell", rkw_cell));
    insert(value_type("cellx", rkw_cellx));
+   insert(value_type("cf", rkw_cf));
    insert(value_type("clbrdrb", rkw_clbrdrb));
    insert(value_type("clbrdrl", rkw_clbrdrl));
    insert(value_type("clbrdrr", rkw_clbrdrr));
@@ -21,7 +24,17 @@ rtf_keyword::keyword_map::keyword_map() : base_class()
    insert(value_type("emspace", rkw_emspace));
    insert(value_type("endash", rkw_endash));
    insert(value_type("enspace", rkw_enspace));
-   insert(value_type("fi", rkw_fi));
+   insert(value_type("f", rkw_f));
+   insert(value_type("fprq", rkw_fprq));
+   insert(value_type("fcharset", rkw_fcharset));
+   insert(value_type("fnil", rkw_fnil));
+   insert(value_type("froman", rkw_froman));
+   insert(value_type("fswiss", rkw_fswiss));
+   insert(value_type("fmodern", rkw_fmodern));
+   insert(value_type("fscript", rkw_fscript));
+   insert(value_type("fdecor", rkw_fdecor));
+   insert(value_type("ftech", rkw_ftech));
+   insert(value_type("fbidi", rkw_fbidi));
    insert(value_type("field", rkw_field));
    insert(value_type("filetbl", rkw_filetbl));
    insert(value_type("fldrslt", rkw_fldrslt));
@@ -29,8 +42,10 @@ rtf_keyword::keyword_map::keyword_map() : base_class()
    insert(value_type("footer", rkw_footer));
    insert(value_type("footerf", rkw_footerf));
    insert(value_type("fs", rkw_fs));
+   insert(value_type("green", rkw_green));
    insert(value_type("header", rkw_header));
    insert(value_type("headerf", rkw_headerf));
+   insert(value_type("highlight", rkw_highlight));
    insert(value_type("i", rkw_i));
    insert(value_type("info", rkw_info));
    insert(value_type("intbl", rkw_intbl));
@@ -50,6 +65,7 @@ rtf_keyword::keyword_map::keyword_map() : base_class()
    insert(value_type("ql", rkw_ql));
    insert(value_type("qr", rkw_qr));
    insert(value_type("rdblquote", rkw_rdblquote));
+   insert(value_type("red", rkw_red));
    insert(value_type("ri", rkw_ri));
    insert(value_type("row", rkw_row));
    insert(value_type("rquote", rkw_rquote));

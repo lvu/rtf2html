@@ -4,6 +4,7 @@
 #include "config.h"
 #include <string>
 #include <sstream>
+#include <iomanip>
 
 #ifndef HAVE_RINT
 
@@ -19,6 +20,13 @@ inline std::string from_int(int value)
 {
    std::ostringstream buf;
    buf<<value;
+   return buf.str();
+}
+
+inline std::string hex(unsigned int value)
+{
+   std::ostringstream buf;
+   buf<<std::setw(2)<<std::setfill('0')<<std::hex<<value;
    return buf.str();
 }
 

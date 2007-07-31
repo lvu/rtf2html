@@ -4,6 +4,10 @@ Version 0.2.0 - 2007/07/29
    in terms of output size, but more conforming to XHTML standard 
    (no cross-tags)
  - Added font size support
+ - Added foreground color, backgound color and highlighting (in fact, 
+   bg color too) support
+ - Added fontface support
+ - Fixed interparagraph spacing to resemble the rtf default one
 Version 0.1.1 - 2005/12/15
  - Fixed fields handling
  - Added handling for some special characters (dashes, ellipsis, etc.)

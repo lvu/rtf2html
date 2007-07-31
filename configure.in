@@ -30,7 +30,7 @@ if test "x$enable_debug" != "xno"; then
    AC_MSG_NOTICE(Enabling debugging info...)
    AC_DEFINE(__DEBUG__,1,Define to 1 for debug version)
    AC_DEFINE(_DEBUG,1,Define to 1 for debug version)
-   CFLAGS="$CFLAGS -g -Wall"
+   CFLAGS="$CFLAGS -g -Wall -O0"
    if test "x$ac_stlport_use" != "xno"; then
       AC_DEFINE(_STLP_DEBUG,1,Define to 1 to use STLPort debug facilities)
    fi

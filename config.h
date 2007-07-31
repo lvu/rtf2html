@@ -47,7 +47,7 @@
 #define HAVE__BOOL 1
 
 /* Define to 1 for release version */
-#define NDEBUG 1
+/* #undef NDEBUG */
 
 /* Name of package */
 #define PACKAGE "rtf2html"
@@ -74,16 +74,16 @@
 #define VERSION "0.2.0"
 
 /* Define to 1 for debug version */
-/* #undef _DEBUG */
+#define _DEBUG 1
 
 /* Define to 1 for release version */
-#define _NDEBUG 1
+/* #undef _NDEBUG */
 
 /* Define to 1 to use STLPort debug facilities */
 /* #undef _STLP_DEBUG */
 
 /* Define to 1 for debug version */
-/* #undef __DEBUG__ */
+#define __DEBUG__ 1
 
 /* Define to empty if `const' does not conform to ANSI C. */
 /* #undef const */
