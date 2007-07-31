@@ -26,19 +26,15 @@
 
     - Under UNIX:
       Just ./configure && make && make install. The program seems
-      to work much (about 3 times) faster when compiled with STLPort
+      to work much (about 2 times) faster when compiled with STLPort
       STL implementation than with the GNU one. So, you may use
       --with-stlport configure option if you have it installed.
 
     - Under MS Windows:
-      You can use Makefile.bcc to compile the program with
-      Borland C++ 5.5 (and maybe other versions, including 
-      Borland C++ Builder). I do not recommend using RW STL
-      that is shipped with BC++ 5.5, as it is MUCH slower
-      than STLport. So, you'd better install STLport and build
-      the program with it.
+      Use MSYS/MinGW, use it the same way as in UNIX.
       No makefiles for other Win compilers are included yet, so,
       write it yourself, if you want - it isn't that hard.
+      BCC is no longer supported!
 
 4.  Installation
 
@@ -77,12 +73,12 @@
         - Page formatting: page width, left margin.
         - Hexadecimal character codes (Cyrillic letters would come out in 
           win1251)
+        - Font faces and sizes.
+        - Foreground and background colors, highlighting.
     
     5.3 Unsupported features
 
         This version DOES NOT support the following:
-        - Font faces and sizes.
-        - Foreground and background colors.
 	- Character sets.
 	- Hyperlinks.
         - Images.
@@ -93,5 +89,5 @@
 
     The source was compiled with 
     - gcc 3.3 under ALT Linux Master 2.4 on i386
-    - Borland C++ 5.5 under Win2k
+    - gcc 3.4.2 (MinGW) under Win2k
     

@@ -8,6 +8,7 @@ Version 0.2.0 - 2007/07/29
    bg color too) support
  - Added fontface support
  - Fixed interparagraph spacing to resemble the rtf default one
+ - Borland C++ is no longer supported
 Version 0.1.1 - 2005/12/15
  - Fixed fields handling
  - Added handling for some special characters (dashes, ellipsis, etc.)

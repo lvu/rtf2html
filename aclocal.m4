@@ -799,7 +799,7 @@ fi])])
 # library defaults to stlport, and can be overridden with the 
 # --with-stlport-libs directive
 #
-#   $Id: aclocal.m4,v 1.5 2007-07-31 12:36:53 vlavrinenko Exp $
+#   $Id: aclocal.m4,v 1.6 2007-07-31 15:39:42 vlavrinenko Exp $
 #
 #   This file is (c) 2001 Jasper Spaans, <jasper@spaans.ds9a.nl> 
 #   Please send your comments, suggestions and bugfixes to the above
@@ -859,11 +859,11 @@ AC_DEFUN([AC_LIB_STLPORT],
       CPPFLAGS="$CPPFLAGS -mthreads"
     fi
     AC_LANG_PUSH(C++)
-    AC_TRY_COMPILE([#include <stl/_config.h>],,
+    AC_TRY_COMPILE([#include <stl/_stlport_version.h>],,
 
     AC_MSG_RESULT($ac_stlport_headers)
     AC_MSG_CHECKING(where to find stlport libraries)
-    AC_TRY_RUN([#include <stl/_config.h>
+    AC_TRY_RUN([#include <stl/_stlport_version.h>
 #include <iostream>
 int 
 main()

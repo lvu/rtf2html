@@ -6,4 +6,6 @@ autom4te.cache
 *.o
 Makefile
 *.exe
+*.gz
+*.bz2
 stamp-h1

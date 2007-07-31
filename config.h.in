@@ -81,6 +81,9 @@
 /* Define to 1 to use STLPort debug facilities */
 #undef _STLP_DEBUG
 
+/* Define to 1 if you link STLPort statically */
+#undef _STLP_USE_STATIC_LIB
+
 /* Define to 1 for debug version */
 #undef __DEBUG__
 

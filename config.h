@@ -8,7 +8,7 @@
 #define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the `stdc++' library (-lstdc++). */
-#define HAVE_LIBSTDC__ 1
+/* #undef HAVE_LIBSTDC__ */
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
@@ -47,7 +47,7 @@
 #define HAVE__BOOL 1
 
 /* Define to 1 for release version */
-/* #undef NDEBUG */
+#define NDEBUG 1
 
 /* Name of package */
 #define PACKAGE "rtf2html"
@@ -74,16 +74,19 @@
 #define VERSION "0.2.0"
 
 /* Define to 1 for debug version */
-#define _DEBUG 1
+/* #undef _DEBUG */
 
 /* Define to 1 for release version */
-/* #undef _NDEBUG */
+#define _NDEBUG 1
 
 /* Define to 1 to use STLPort debug facilities */
 /* #undef _STLP_DEBUG */
 
+/* Define to 1 if you link STLPort statically */
+#define _STLP_USE_STATIC_LIB 1
+
 /* Define to 1 for debug version */
-#define __DEBUG__ 1
+/* #undef __DEBUG__ */
 
 /* Define to empty if `const' does not conform to ANSI C. */
 /* #undef const */

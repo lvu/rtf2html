@@ -3,6 +3,7 @@
 #include "config.h"
 #include <string>
 #include <map>
+#include <ctype.h>
 
 class rtf_keyword{
  public:
@@ -66,7 +67,7 @@ template <class InputIter>
 rtf_keyword::rtf_keyword(InputIter &iter)
 {
    char curchar=*iter;
-   is_ctrl_chr=!std::isalpha(curchar);
+   is_ctrl_chr=!isalpha(curchar);
 
    if (is_ctrl_chr)
    {
@@ -77,9 +78,9 @@ rtf_keyword::rtf_keyword(InputIter &iter)
    {
       do
          s_keyword+=curchar;
-      while (std::isalpha(curchar=*++iter));
+      while (isalpha(curchar=*++iter));
       std::string param_str;
-      while (std::isdigit(curchar)||curchar=='-')
+      while (isdigit(curchar)||curchar=='-')
       {
          param_str+=curchar;
          curchar=*++iter;

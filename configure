@@ -863,6 +863,7 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --disable-dependency-tracking Speeds up one-time builds
   --enable-dependency-tracking  Do not reject slow dependency extractors
+  --enable-static         link with STLPort statically
   --enable-debug          compile with debug info
 
 Optional Packages:
@@ -4193,6 +4194,21 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
+# Check whether --enable-static or --disable-static was given.
+if test "${enable_static+set}" = set; then
+  enableval="$enable_static"
+
+else
+  enable_static=no
+fi;
+if test "x$enable_static" != "xno"; then
+
+cat >>confdefs.h <<\_ACEOF
+#define _STLP_USE_STATIC_LIB 1
+_ACEOF
+
+fi
+
   echo "$as_me:$LINENO: checking whether to use stlport libraries" >&5
 echo $ECHO_N "checking whether to use stlport libraries... $ECHO_C" >&6
 
@@ -4261,7 +4277,7 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-#include <stl/_config.h>
+#include <stl/_stlport_version.h>
 int
 main ()
 {
@@ -4310,7 +4326,7 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-#include <stl/_config.h>
+#include <stl/_stlport_version.h>
 #include <iostream>
 int
 main()
@@ -4432,6 +4448,7 @@ echo "$as_me: error: rtf2html requires either libstdc++ or libstrloprt" >&2;}
 fi
 
 fi
+
 ac_ext=cc
 ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'

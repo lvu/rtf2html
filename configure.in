@@ -17,10 +17,16 @@ AC_C_INLINE
 
 AC_LANG_CPLUSPLUS
 
+AC_ARG_ENABLE(static,AS_HELP_STRING(--enable-static,link with STLPort statically),,enable_static=no)
+if test "x$enable_static" != "xno"; then
+   AC_DEFINE(_STLP_USE_STATIC_LIB,1,Define to 1 if you link STLPort statically)
+fi
+
 AC_LIB_STLPORT(no)
 if test "$ac_stlport_use" == "no"; then
    AC_CHECK_LIB(stdc++,main,,AC_MSG_ERROR(rtf2html requires either libstdc++ or libstrloprt))
 fi
+
 AC_CHECK_HEADER(string,,AC_MSG_ERROR(STL classes missing ?))
 AC_CHECK_FUNCS(floor strtol,,AC_MSG_ERROR(STDLIB funcs missing))
 AC_CHECK_FUNC(rint,AC_DEFINE(HAVE_RINT,1,Define to 1 if you have rint function))

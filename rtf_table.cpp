@@ -3,6 +3,7 @@
 #include <ostream>
 #include <iostream>
 #include <stdexcept>
+#include <functional>
 
 typedef std::set<int> intset;
 

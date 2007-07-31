@@ -43,7 +43,6 @@
 #include "rtf_tools.h"
 #include "rtf_keyword.h"
 #include "fmt_opts.h"
-#include <cctype>
 #include <cstdlib>
 #include <stdexcept>
 #include <fstream>
