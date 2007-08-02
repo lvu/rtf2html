@@ -9,3 +9,4 @@ Makefile
 *.gz
 *.bz2
 stamp-h1
+*~

@@ -537,14 +537,10 @@ int main(int argc, char **argv)
          par_html.write(*buf_in++);
       }
    }
-   file_out<<"<html><head><STYLE type=\"text/css\">p {margin-top:0pt;margin-bottom:0pt}</STYLE></head><body><div style=\"width:";
-   file_out<<rint((iDocWidth/20));
-   file_out<<"pt;";
-   file_out<<"padding-left=";
-   file_out<<rint(iMarginLeft/20);
-   file_out<<"pt\">";
-   file_out<<html;
-   file_out<<"</div></body></html>";
+   file_out<<"<html><head><STYLE type=\"text/css\">body {padding-left:"
+           <<rint(iMarginLeft/20)<<"pt;width:"<<rint((iDocWidth/20))<<"pt}"
+           <<" p {margin-top:0pt;margin-bottom:0pt}</STYLE></head>\n"
+           <<"<body>"<<html<<"</body></html>";
    if (argc>1)
       delete p_file_in;
    if (argc>2)
