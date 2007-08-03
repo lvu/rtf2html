@@ -5,6 +5,7 @@
 #include "common.h"
 #include <stack>
 #include <vector>
+#include <deque>
 #include <map>
 
 struct color {
@@ -13,6 +14,10 @@ struct color {
    bool operator==(const color &clr)
    {
       return r==clr.r && g==clr.g && b==clr.b;
+   }
+   bool operator!=(const color &clr)
+   {
+      return !(*this==clr);
    }
    color &operator=(const color &clr)
    {
@@ -35,6 +40,10 @@ struct font {
    {
       return family==f.family && name==f.name;
    }
+   bool operator!=(const font &f)
+   {
+      return !(*this==f);
+   }
    font &operator=(const font &f)
    {
       family=f.family; name=f.name; pitch=f.pitch; charset=f.charset;
@@ -47,7 +56,9 @@ typedef std::map<int, font> fontmap;
 struct formatting_options
 {
    enum halign {align_left, align_right, align_center, align_justify, align_error};
-   bool chpBold, chpItalic, chpUnderline, chpSub, chpSup;
+   enum valign {va_normal, va_sub, va_sup};
+   bool chpBold, chpItalic, chpUnderline;
+   valign chpVAlign;
    int chpFontSize, chpHighlight;
    color chpFColor, chpBColor;
    font chpFont;
@@ -57,7 +68,8 @@ struct formatting_options
    bool papInTbl;
    formatting_options()
    {
-      chpBold=chpItalic=chpUnderline=chpSub=chpSup=false;
+      chpBold=chpItalic=chpUnderline=false;
+      chpVAlign=va_normal;
       chpFontSize=chpHighlight=0;
       papLeft=papRight=papFirst=papBefore=papAfter=0;
       papAlign=align_left;
@@ -66,8 +78,8 @@ struct formatting_options
    bool operator==(const formatting_options &opt) // tests only for character options
    {
       return chpBold==opt.chpBold && chpItalic==opt.chpItalic 
-             && chpUnderline==opt.chpUnderline && chpSub==opt.chpSub
-             && chpSup==opt.chpSup && chpFontSize==opt.chpFontSize
+             && chpUnderline==opt.chpUnderline && chpVAlign==opt.chpVAlign
+             && chpFontSize==opt.chpFontSize
              && chpFColor==opt.chpFColor && chpBColor==opt.chpBColor
              && chpHighlight==opt.chpHighlight && chpFont==opt.chpFont;
    }
@@ -78,7 +90,7 @@ struct formatting_options
    formatting_options &operator=(const formatting_options &opt)
    {
       chpBold=opt.chpBold; chpItalic=opt.chpItalic;
-      chpUnderline=opt.chpUnderline; chpSub=opt.chpSub; chpSup=opt.chpSup;
+      chpUnderline=opt.chpUnderline; chpVAlign=opt.chpVAlign;
       chpFontSize=opt.chpFontSize; 
       chpFColor=opt.chpFColor; chpBColor=opt.chpBColor;
       chpHighlight=opt.chpHighlight; chpFont=opt.chpFont;
@@ -88,33 +100,36 @@ struct formatting_options
       return *this;
    }
    std::string get_par_str() const;
-   std::string get_span_str() const;
 };
 
 typedef std::stack<formatting_options> fo_stack;
 
+typedef std::deque<formatting_options> fo_deque;
+
+class formatter {
+ private:
+   fo_deque opt_stack;
+ public:
+   std::string format(const formatting_options &opt);
+   std::string close();
+   void clear() { opt_stack.clear(); }
+};
 
 class html_text {
  private:
-   formatting_options cur_opt;
    const formatting_options &opt;
+   formatter fmt;
    std::string text;
  public:
    html_text(const formatting_options &_opt) : opt(_opt) {}
    const std::string &str() { return text; }
    template <class T> void write(T s)
    {
-      if (cur_opt!=opt || text.empty())
-      {
-         if (!text.empty())
-            text+="</span>";
-         text+=opt.get_span_str();
-         cur_opt=opt;
-      }
-      text+=s;
+      text+=fmt.format(opt)+s;
    }
+   std::string close() { return fmt.close(); }
 //   void write(char c) { write(std::string()+c); }
-   void clear() { text.clear(); }
+   void clear() { text.clear(); fmt.clear(); }
 };
 
 #endif

@@ -355,7 +355,7 @@ int main(int argc, char **argv)
                   break;
                case rtf_keyword::rkw_par: case rtf_keyword::rkw_sect:
                   t_str=cur_options.get_par_str()+par_html.str()
-                        +"&nbsp;</span></p>\n";
+                        +"&nbsp;"+par_html.close()+"</p>\n";
                   if (!bInTable)
                   {
                      html+=t_str;
@@ -378,10 +378,14 @@ int main(int argc, char **argv)
                   break;
                // character formatting
                case rtf_keyword::rkw_super:
-                  cur_options.chpSup=!(kw.parameter()==0);
+                  cur_options.chpVAlign=
+                     kw.parameter()==0?formatting_options::va_normal
+                                      :formatting_options::va_sup;
                   break;
                case rtf_keyword::rkw_sub:
-                  cur_options.chpSub=!(kw.parameter()==0);
+                  cur_options.chpVAlign=
+                     kw.parameter()==0?formatting_options::va_normal
+                                      :formatting_options::va_sub;
                   break;
                case rtf_keyword::rkw_b:
                   cur_options.chpBold=!(kw.parameter()==0);
@@ -412,8 +416,8 @@ int main(int argc, char **argv)
                   break;
                case rtf_keyword::rkw_plain:
                   cur_options.chpBold=cur_options.chpItalic
-                  	=cur_options.chpUnderline=cur_options.chpSup
-                  	=cur_options.chpSub=false;
+                  	=cur_options.chpUnderline=false;
+                  cur_options.chpVAlign=formatting_options::va_normal;
                   cur_options.chpFontSize=cur_options.chpHighlight=0;
                   cur_options.chpFColor=cur_options.chpBColor=color();
                   cur_options.chpFont=font();
@@ -440,7 +444,7 @@ int main(int argc, char **argv)
                   break;
                case rtf_keyword::rkw_cell:
                   t_str=cur_options.get_par_str()+par_html.str()
-                        +"&nbsp;</span></p>\n";
+                        +"&nbsp;"+par_html.close()+"</p>\n";
                   tcCurCell->Text+=t_str;
                   par_html.clear();
                   trCurRow->Cells.push_back(tcCurCell);
