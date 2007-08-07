@@ -29,7 +29,7 @@ class rtf_keyword{
                       rkw_rdblquote, rkw_red, rkw_ri, rkw_row, rkw_rquote,
                       rkw_sa, rkw_sb, rkw_sect, rkw_softline, rkw_stylesheet, 
                       rkw_sub, rkw_super, 
-                      rkw_tab, rkw_trleft, rkw_trowd, rkw_trrh, 
+                      rkw_tab, rkw_title, rkw_trleft, rkw_trowd, rkw_trrh, 
                       rkw_ul, rkw_ulnone
                      };
  private:

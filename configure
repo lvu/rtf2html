@@ -4208,6 +4208,49 @@ cat >>confdefs.h <<\_ACEOF
 _ACEOF
 
 fi
+# Check whether --enable-debug or --disable-debug was given.
+if test "${enable_debug+set}" = set; then
+  enableval="$enable_debug"
+
+else
+  enable_debug=no
+fi;
+if test "x$enable_debug" != "xno"; then
+   { echo "$as_me:$LINENO: Enabling debugging info..." >&5
+echo "$as_me: Enabling debugging info..." >&6;}
+
+cat >>confdefs.h <<\_ACEOF
+#define __DEBUG__ 1
+_ACEOF
+
+
+cat >>confdefs.h <<\_ACEOF
+#define _DEBUG 1
+_ACEOF
+
+   CFLAGS="$CFLAGS -g -Wall -O0"
+
+cat >>confdefs.h <<\_ACEOF
+#define _STLP_DEBUG 1
+_ACEOF
+
+else
+   { echo "$as_me:$LINENO: Disabling debugging info..." >&5
+echo "$as_me: Disabling debugging info..." >&6;}
+
+cat >>confdefs.h <<\_ACEOF
+#define NDEBUG 1
+_ACEOF
+
+
+cat >>confdefs.h <<\_ACEOF
+#define _NDEBUG 1
+_ACEOF
+
+   CFLAGS=$(echo $CFLAGS|sed 's/-g//g')
+fi
+
+
 
   echo "$as_me:$LINENO: checking whether to use stlport libraries" >&5
 echo $ECHO_N "checking whether to use stlport libraries... $ECHO_C" >&6
@@ -5031,50 +5074,6 @@ _ACEOF
 
 fi
 
-
-# Check whether --enable-debug or --disable-debug was given.
-if test "${enable_debug+set}" = set; then
-  enableval="$enable_debug"
-
-else
-  enable_debug=no
-fi;
-if test "x$enable_debug" != "xno"; then
-   { echo "$as_me:$LINENO: Enabling debugging info..." >&5
-echo "$as_me: Enabling debugging info..." >&6;}
-
-cat >>confdefs.h <<\_ACEOF
-#define __DEBUG__ 1
-_ACEOF
-
-
-cat >>confdefs.h <<\_ACEOF
-#define _DEBUG 1
-_ACEOF
-
-   CFLAGS="$CFLAGS -g -Wall -O0"
-   if test "x$ac_stlport_use" != "xno"; then
-
-cat >>confdefs.h <<\_ACEOF
-#define _STLP_DEBUG 1
-_ACEOF
-
-   fi
-else
-   { echo "$as_me:$LINENO: Disabling debugging info..." >&5
-echo "$as_me: Disabling debugging info..." >&6;}
-
-cat >>confdefs.h <<\_ACEOF
-#define NDEBUG 1
-_ACEOF
-
-
-cat >>confdefs.h <<\_ACEOF
-#define _NDEBUG 1
-_ACEOF
-
-   CFLAGS=$(echo $CFLAGS|sed 's/-g//g')
-fi
 
 CXXFLAGS="$CPPFLAGS $CFLAGS"
 

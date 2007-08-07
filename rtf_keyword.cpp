@@ -77,6 +77,7 @@ rtf_keyword::keyword_map::keyword_map() : base_class()
    insert(value_type("sub", rkw_sub));
    insert(value_type("super", rkw_super));
    insert(value_type("tab", rkw_tab));
+   insert(value_type("title", rkw_title));
    insert(value_type("trleft", rkw_trleft));
    insert(value_type("trowd", rkw_trowd));
    insert(value_type("trrh", rkw_trrh));

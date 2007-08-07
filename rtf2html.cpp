@@ -95,6 +95,7 @@ int main(int argc, char **argv)
    std::string::iterator buf_in=str_in.begin(), buf_in_end=str_in.end();
    colorvect colortbl;
    fontmap fonttbl;
+   std::string title;
 
    bool bAsterisk=false;
    fo_stack foStack;
@@ -165,7 +166,7 @@ int main(int argc, char **argv)
                switch (kw.keyword())
                {
                case rtf_keyword::rkw_filetbl: 
-               case rtf_keyword::rkw_stylesheet: case rtf_keyword::rkw_info:
+               case rtf_keyword::rkw_stylesheet:
                case rtf_keyword::rkw_header: 
                case rtf_keyword::rkw_footer: case rtf_keyword::rkw_headerf: 
                case rtf_keyword::rkw_footerf: case rtf_keyword::rkw_pict:
@@ -173,6 +174,30 @@ int main(int argc, char **argv)
                   // we'll skip such groups
                   skip_group(buf_in);
                   break;
+               // document title
+               case rtf_keyword::rkw_info: 
+               {
+                  int depth=1;
+                  bool in_title=false;
+                  while (depth>0)
+                  {
+//                     std::cout<<std::string(buf_in).substr(0,20)<<"\t"<<depth<<std::endl;
+                     switch (*buf_in)
+                     {
+                     case '\\':
+                     {
+                        rtf_keyword kw(++buf_in);
+                        if (kw.keyword()==rtf_keyword::rkw_title)
+                           in_title=true;
+                        break;
+                     }
+                     case '{': ++depth; ++buf_in; break;
+                     case '}': --depth; ++buf_in; in_title=false; break;
+                     default: if (in_title) title+=*buf_in; ++buf_in; break;
+                     }
+                  }
+                  break;
+               }
                // color table
                case rtf_keyword::rkw_colortbl:
                {
@@ -543,7 +568,8 @@ int main(int argc, char **argv)
    }
    file_out<<"<html><head><STYLE type=\"text/css\">body {padding-left:"
            <<rint(iMarginLeft/20)<<"pt;width:"<<rint((iDocWidth/20))<<"pt}"
-           <<" p {margin-top:0pt;margin-bottom:0pt}</STYLE></head>\n"
+           <<" p {margin-top:0pt;margin-bottom:0pt}</STYLE>"<<
+           "<title>"<<title<<"</title></head>\n"
            <<"<body>"<<html<<"</body></html>";
    if (argc>1)
       delete p_file_in;
