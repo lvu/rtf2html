@@ -137,6 +137,12 @@ int main(int argc, char **argv)
                int code=std::strtol(stmp.c_str(), NULL, 16);
                switch (code)
                {
+                  case 147:
+                     par_html.write("&ldquo;");
+                     break;
+                  case 148:
+                     par_html.write("&rdquo;");
+                     break;
                   case 167:
                      par_html.write("&bull;");
                      break;
