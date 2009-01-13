@@ -6,6 +6,7 @@ rtf_keyword::keyword_map::keyword_map() : base_class()
    insert(value_type("blue", rkw_blue));
    insert(value_type("brdrnone", rkw_brdrnone));
    insert(value_type("bullet", rkw_bullet));
+   insert(value_type("caps", rkw_caps));
    insert(value_type("cb", rkw_cb));
    insert(value_type("cell", rkw_cell));
    insert(value_type("cellx", rkw_cellx));

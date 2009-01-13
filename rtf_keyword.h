@@ -9,7 +9,7 @@ class rtf_keyword{
  public:
    enum keyword_type {rkw_unknown,
                       rkw_b, rkw_bin, rkw_blue, rkw_brdrnone, rkw_bullet,
-                      rkw_cb, rkw_cell, rkw_cellx, rkw_cf, rkw_clbrdrb, rkw_clbrdrl, 
+                      rkw_caps, rkw_cb, rkw_cell, rkw_cellx, rkw_cf, rkw_clbrdrb, rkw_clbrdrl, 
                       rkw_clbrdrr, rkw_clbrdrt, rkw_clvertalb, rkw_clvertalc, 
                       rkw_clvertalt, rkw_clvmgf, rkw_clvmrg, rkw_colortbl, 
                       rkw_emdash, rkw_emspace, rkw_endash, rkw_enspace,

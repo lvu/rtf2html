@@ -166,6 +166,8 @@ int main(int argc, char **argv)
             {
                bAsterisk=false;
                skip_group(buf_in);
+               cur_options=foStack.top();
+               foStack.pop();
             }
             else
             {
@@ -421,6 +423,9 @@ int main(int argc, char **argv)
                case rtf_keyword::rkw_b:
                   cur_options.chpBold=!(kw.parameter()==0);
                   break;
+               case rtf_keyword::rkw_caps:
+                  cur_options.chpAllCaps=!(kw.parameter()==0);
+                  break;
                case rtf_keyword::rkw_i:
                   cur_options.chpItalic=!(kw.parameter()==0);
                   break;
@@ -446,8 +451,8 @@ int main(int argc, char **argv)
                   cur_options.chpFont=fonttbl[kw.parameter()];
                   break;
                case rtf_keyword::rkw_plain:
-                  cur_options.chpBold=cur_options.chpItalic
-                  	=cur_options.chpUnderline=false;
+                  cur_options.chpBold=cur_options.chpAllCaps
+                    =cur_options.chpItalic=cur_options.chpUnderline=false;
                   cur_options.chpVAlign=formatting_options::va_normal;
                   cur_options.chpFontSize=cur_options.chpHighlight=0;
                   cur_options.chpFColor=cur_options.chpBColor=color();

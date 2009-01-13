@@ -105,6 +105,12 @@ std::string formatter::format(const formatting_options &_opt)
       style+=opt.chpBold?"bold":"normal";
       style+=";";
    }
+   if (opt.chpAllCaps!=last_opt.chpAllCaps)
+   {
+      style+="text-transform:";
+      style+=opt.chpAllCaps?"uppercase":"none";
+      style+=";";
+   }
    if (opt.chpItalic!=last_opt.chpItalic)
    {
       style+="font-style:";
