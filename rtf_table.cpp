@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <functional>
+#include <algorithm>
 
 typedef std::set<int> intset;
 

@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include <string>
+#include <cstdlib>
 #include <map>
 #include <ctype.h>
 

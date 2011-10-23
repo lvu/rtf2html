@@ -10,3 +10,4 @@ Makefile
 *.bz2
 stamp-h1
 *~
+rtf2html

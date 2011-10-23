@@ -8,7 +8,7 @@
 #define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the `stdc++' library (-lstdc++). */
-/* #undef HAVE_LIBSTDC__ */
+#define HAVE_LIBSTDC__ 1
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
@@ -83,7 +83,7 @@
 /* #undef _STLP_DEBUG */
 
 /* Define to 1 if you link STLPort statically */
-#define _STLP_USE_STATIC_LIB 1
+/* #undef _STLP_USE_STATIC_LIB */
 
 /* Define to 1 for debug version */
 /* #undef __DEBUG__ */
