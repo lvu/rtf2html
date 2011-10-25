@@ -179,6 +179,10 @@ std::string formatter::format(const formatting_options &_opt)
       }
       style+=";";
    }
+   if (opt.chpVShift!=last_opt.chpVShift)
+   {
+      style += "position:relative;top:" + from_int(opt.chpVShift / 2) + "pt;";
+   }
    if (opt.chpFont!=last_opt.chpFont)
    {
       style+="font-family:'";

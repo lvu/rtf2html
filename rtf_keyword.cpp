@@ -21,6 +21,7 @@ rtf_keyword::keyword_map::keyword_map() : base_class()
    insert(value_type("clvmgf", rkw_clvmgf));
    insert(value_type("clvmrg", rkw_clvmrg));
    insert(value_type("colortbl", rkw_colortbl));
+   insert(value_type("dn", rkw_dn));
    insert(value_type("emdash", rkw_emdash));
    insert(value_type("emspace", rkw_emspace));
    insert(value_type("endash", rkw_endash));
@@ -84,6 +85,7 @@ rtf_keyword::keyword_map::keyword_map() : base_class()
    insert(value_type("trrh", rkw_trrh));
    insert(value_type("ul", rkw_ul));
    insert(value_type("ulnone", rkw_ulnone));
+   insert(value_type("up", rkw_up));
 }
 
 rtf_keyword::keyword_map rtf_keyword::keymap;

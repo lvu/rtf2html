@@ -14,6 +14,7 @@ class rtf_keyword{
                       rkw_caps, rkw_cb, rkw_cell, rkw_cellx, rkw_cf, rkw_clbrdrb, rkw_clbrdrl, 
                       rkw_clbrdrr, rkw_clbrdrt, rkw_clvertalb, rkw_clvertalc, 
                       rkw_clvertalt, rkw_clvmgf, rkw_clvmrg, rkw_colortbl, 
+                      rkw_dn,
                       rkw_emdash, rkw_emspace, rkw_endash, rkw_enspace,
                       rkw_fi, rkw_field, rkw_filetbl, 
                       rkw_f, rkw_fprq, rkw_fcharset,
@@ -32,7 +33,7 @@ class rtf_keyword{
                       rkw_sa, rkw_sb, rkw_sect, rkw_softline, rkw_stylesheet, 
                       rkw_sub, rkw_super, 
                       rkw_tab, rkw_title, rkw_trleft, rkw_trowd, rkw_trrh, 
-                      rkw_ul, rkw_ulnone
+                      rkw_ul, rkw_ulnone, rkw_up
                      };
  private:
    class keyword_map : public std::map<std::string, keyword_type>

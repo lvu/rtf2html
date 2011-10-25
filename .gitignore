@@ -11,3 +11,8 @@ Makefile
 stamp-h1
 *~
 rtf2html
+*.rtf
+*.html
+*#
+*.RTF
+*.docx

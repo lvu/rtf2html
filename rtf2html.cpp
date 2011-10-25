@@ -144,13 +144,13 @@ int main(int argc, char **argv)
                      par_html.write("&rdquo;");
                      break;
                   case 167:
-                     par_html.write("&bull;");
+                     par_html.write("&sect;");
                      break;
                   case 188:
-                     par_html.write("&hellip;");
+                     par_html.write("&frac14;");
                      break;
                   default:
-                     par_html.write((char)code);
+                     par_html.write(std::string("&#") + from_int(code) + ";");
                }
                break;
             }
@@ -438,6 +438,12 @@ int main(int argc, char **argv)
                case rtf_keyword::rkw_fs:
                   cur_options.chpFontSize=kw.parameter();
                   break;
+               case rtf_keyword::rkw_dn:
+                  cur_options.chpVShift = kw.parameter() == -1 ? 6 : kw.parameter();
+                  break;
+               case rtf_keyword::rkw_up:
+                  cur_options.chpVShift = kw.parameter() == -1 ? -6 : -kw.parameter();
+                  break;
                case rtf_keyword::rkw_cf:
                   cur_options.chpFColor=colortbl[kw.parameter()];
                   break;
@@ -579,8 +585,8 @@ int main(int argc, char **argv)
    }
    file_out<<"<html><head><STYLE type=\"text/css\">body {padding-left:"
            <<rint(iMarginLeft/20)<<"pt;width:"<<rint((iDocWidth/20))<<"pt}"
-           <<" p {margin-top:0pt;margin-bottom:0pt}</STYLE>"<<
-           "<title>"<<title<<"</title></head>\n"
+           <<" p {margin-top:0pt;margin-bottom:0pt}</STYLE>"
+           <<"<title>"<<title<<"</title></head>\n"
            <<"<body>"<<html<<"</body></html>";
    if (argc>1)
       delete p_file_in;
