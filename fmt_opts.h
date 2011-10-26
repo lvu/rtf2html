@@ -52,9 +52,11 @@ struct font {
 };
 
 typedef std::map<int, font> fontmap;
+typedef std::map<std::string, std::string> strmap;
 
 struct formatting_options
 {
+   static strmap styles;
    enum halign {align_left, align_right, align_center, align_justify, align_error};
    enum valign {va_normal, va_sub, va_sup};
    bool chpBold, chpAllCaps, chpItalic, chpUnderline;
@@ -104,6 +106,8 @@ struct formatting_options
       return *this;
    }
    std::string get_par_str() const;
+   static std::string get_style_id(const std::string &style);
+   static std::string get_styles();
 };
 
 typedef std::stack<formatting_options> fo_stack;

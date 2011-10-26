@@ -1,5 +1,7 @@
 #include "fmt_opts.h"
 
+strmap formatting_options::styles;
+
 std::string formatting_options::get_par_str() const
 {
    std::string style;
@@ -48,9 +50,28 @@ std::string formatting_options::get_par_str() const
       return std::string("<p>");
    else
    {
-      style.insert(0, "<p style=\"");
-      return style+"\">";
+      return std::string("<p class=\"") + formatting_options::get_style_id(style) + "\">";
    }
+}
+
+std::string formatting_options::get_style_id(const std::string &style)
+{
+   strmap::iterator i_style = styles.find(style);
+   if (i_style == styles.end())
+   {
+      i_style = styles.insert(strmap::value_type(style, std::string("cls") + from_int(styles.size()))).first;
+   }
+   return i_style->second;
+}
+
+std::string formatting_options::get_styles()
+{
+   std::string result;
+   for (strmap::const_iterator i = styles.begin(); i != styles.end(); ++i)
+   {
+      result += std::string(".") + i->second + " {" + i->first + "}\n";
+   }
+   return result;
 }
 
 std::string formatter::format(const formatting_options &_opt)
@@ -199,7 +220,7 @@ std::string formatter::format(const formatting_options &_opt)
       style+=";";
    }
    opt_stack.push_back(opt);
-   return result+"<span style=\""+style+"\">";
+   return result + "<span class=\"" + formatting_options::get_style_id(style) + "\">";
 }
 
 std::string formatter::close()

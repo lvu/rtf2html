@@ -125,35 +125,15 @@ int main(int argc, char **argv)
       {
          rtf_keyword kw(++buf_in);
          if (kw.is_control_char())
+         {
             switch (kw.control_char())
             {
             case '\\': case '{': case '}':
                par_html.write(kw.control_char());
                break;
             case '\'':
-            {
-               std::string stmp(1,*buf_in++);
-               stmp+=*buf_in++;
-               int code=std::strtol(stmp.c_str(), NULL, 16);
-               switch (code)
-               {
-                  case 147:
-                     par_html.write("&ldquo;");
-                     break;
-                  case 148:
-                     par_html.write("&rdquo;");
-                     break;
-                  case 167:
-                     par_html.write("&sect;");
-                     break;
-                  case 188:
-                     par_html.write("&frac14;");
-                     break;
-                  default:
-                     par_html.write(std::string("&#") + from_int(code) + ";");
-               }
+               par_html.write(char_by_code(buf_in));
                break;
-            }
             case '*':
                bAsterisk=true;
                break;
@@ -161,7 +141,9 @@ int main(int argc, char **argv)
                par_html.write("&nbsp;");
                break;
             }
+         }
          else //kw.is_control_char
+         {
             if (bAsterisk)
             {
                bAsterisk=false;
@@ -195,13 +177,24 @@ int main(int argc, char **argv)
                      case '\\':
                      {
                         rtf_keyword kw(++buf_in);
-                        if (kw.keyword()==rtf_keyword::rkw_title)
+                        if (in_title && kw.is_control_char() && kw.control_char() == '\'')
+                           title += char_by_code(buf_in);
+                        else if (kw.keyword()==rtf_keyword::rkw_title)
                            in_title=true;
                         break;
                      }
-                     case '{': ++depth; ++buf_in; break;
-                     case '}': --depth; ++buf_in; in_title=false; break;
-                     default: if (in_title) title+=*buf_in; ++buf_in; break;
+                     case '{': 
+                        ++depth; ++buf_in;
+                        break;
+                     case '}':
+                        --depth; ++buf_in; 
+                        in_title=false;
+                        break;
+                     default:
+                        if (in_title)
+                            title += *buf_in;
+                        ++buf_in;
+                        break;
                      }
                   }
                   break;
@@ -551,6 +544,7 @@ int main(int argc, char **argv)
                   break;
                }
             }
+         }
          break;
       }
       case '{':
@@ -583,11 +577,11 @@ int main(int argc, char **argv)
          par_html.write(*buf_in++);
       }
    }
-   file_out<<"<html><head><STYLE type=\"text/css\">body {padding-left:"
-           <<rint(iMarginLeft/20)<<"pt;width:"<<rint((iDocWidth/20))<<"pt}"
-           <<" p {margin-top:0pt;margin-bottom:0pt}</STYLE>"
-           <<"<title>"<<title<<"</title></head>\n"
-           <<"<body>"<<html<<"</body></html>";
+   file_out<<"<html>\n<head>\n<STYLE type=\"text/css\">\nbody {padding-left:"
+           <<rint(iMarginLeft/20)<<"pt;width:"<<rint((iDocWidth/20))<<"pt}\n"
+           <<"p {margin-top:0pt;margin-bottom:0pt}\n"<<formatting_options::get_styles()<<"</STYLE>\n"
+           <<"<title>"<<title<<"</title>\n</head>\n"
+           <<"<body>\n"<<html<<"</body>\n</html>";
    if (argc>1)
       delete p_file_in;
    if (argc>2)
