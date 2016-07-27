@@ -142,6 +142,10 @@ int main(int argc, char **argv)
                break;
             }
          }
+         else if (kw.is_symbol_8bit())
+         {
+            par_html.write_char(kw.symbol_8bit());
+         }
          else //kw.is_control_char
          {
             if (bAsterisk)
