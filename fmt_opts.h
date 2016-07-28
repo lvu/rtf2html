@@ -135,6 +135,11 @@ class html_text {
    {
       text+=fmt.format(opt)+s;
    }
+   void write_char(char ch)
+   {
+      text += fmt.format(opt);
+      text.push_back(ch);
+   }
    std::string close() { return fmt.close(); }
 //   void write(char c) { write(std::string()+c); }
    void clear() { text.clear(); fmt.clear(); }

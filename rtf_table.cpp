@@ -69,10 +69,8 @@ std::string table::make()
    // first, we'll determine all the rowspans and leftsides
    for (row=begin(); row!=end(); ++row)
    {
-      if ((*row)->CellDefs->size()!=(*row)->Cells.size())
-         throw std::logic_error("Number of Cells and number of CellDefs are unequal!");
       for (cell_def=(*row)->CellDefs->begin(), cell=(*row)->Cells.begin(); 
-           cell!=(*row)->Cells.end();
+           cell!=(*row)->Cells.end() && cell_def!=(*row)->CellDefs->end();
            ++cell, prev_cell_def=cell_def++
           )
       {

@@ -50,6 +50,10 @@ class rtf_keyword{
    int param;
    char ctrl_chr;
    bool is_ctrl_chr;
+
+   char value_8bit;
+   bool is_8bit;
+
  public:
    // iter must point after the backslash starting the keyword. We don't check it.
    // after construction, iter points at the char following the keyword
@@ -64,6 +68,10 @@ class rtf_keyword{
    {  return param; }
    char control_char() const
    {  return ctrl_chr; }
+   bool is_symbol_8bit() const
+   {  return is_8bit; }
+   char symbol_8bit() const
+   {  return value_8bit; }
 };
 
 template <class InputIter>
@@ -71,11 +79,27 @@ rtf_keyword::rtf_keyword(InputIter &iter)
 {
    char curchar=*iter;
    is_ctrl_chr=!isalpha(curchar);
+   is_8bit = false;
 
    if (is_ctrl_chr)
    {
-      ctrl_chr=curchar;
-      ++iter;
+      if (curchar == '\'')
+      {
+          char buf[4] = {0, 0, 0, 0};
+          value_8bit = 0;
+          is_ctrl_chr = false;
+          is_8bit = true;
+          curchar = *(++iter);
+          for (int i = 0; i < 2 && isxdigit(curchar); ++i, curchar = *(++iter))
+              buf[i] = curchar;
+
+          value_8bit = strtol(buf, NULL, 16);
+      }
+      else
+      {
+          ctrl_chr=curchar;
+          ++iter;
+      }
    }
    else
    {
@@ -92,7 +116,7 @@ rtf_keyword::rtf_keyword(InputIter &iter)
          param=-1;
       else
          param=std::atoi(param_str.c_str());
-      if (curchar==' ')
+      if (isspace(curchar))
          ++iter;
       keyword_map::iterator kw_pos=keymap.find(s_keyword);
       if (kw_pos==keymap.end())
