@@ -116,7 +116,7 @@ rtf_keyword::rtf_keyword(InputIter &iter)
          param=-1;
       else
          param=std::atoi(param_str.c_str());
-      if (curchar==' ')
+      if (isspace(curchar))
          ++iter;
       keyword_map::iterator kw_pos=keymap.find(s_keyword);
       if (kw_pos==keymap.end())

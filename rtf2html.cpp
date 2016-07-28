@@ -581,6 +581,8 @@ int main(int argc, char **argv)
          par_html.write(*buf_in++);
       }
    }
+   if (html.empty() && !par_html.str().empty())
+      html = par_html.str();
    file_out<<"<html>\n<head>\n<STYLE type=\"text/css\">\nbody {padding-left:"
            <<rint(iMarginLeft/20)<<"pt;width:"<<rint((iDocWidth/20))<<"pt}\n"
            <<"p {margin-top:0pt;margin-bottom:0pt}\n"<<formatting_options::get_styles()<<"</STYLE>\n"
