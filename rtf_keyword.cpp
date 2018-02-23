@@ -86,6 +86,7 @@ rtf_keyword::keyword_map::keyword_map() : base_class()
    insert(value_type("ul", rkw_ul));
    insert(value_type("ulnone", rkw_ulnone));
    insert(value_type("up", rkw_up));
+   insert(value_type("u", rkw_unicode));
 }
 
 rtf_keyword::keyword_map rtf_keyword::keymap;

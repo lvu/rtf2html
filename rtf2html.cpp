@@ -155,6 +155,13 @@ int main(int argc, char **argv)
             {
                switch (kw.keyword())
                {
+               case rtf_keyword::rkw_unicode:
+               {
+                   char buf[128];
+                   sprintf(buf,"&#%d;",kw.parameter());
+                   par_html.write(buf);
+                   break;
+               }
                case rtf_keyword::rkw_filetbl: 
                case rtf_keyword::rkw_stylesheet:
                case rtf_keyword::rkw_header: 

@@ -33,7 +33,7 @@ class rtf_keyword{
                       rkw_sa, rkw_sb, rkw_sect, rkw_softline, rkw_stylesheet, 
                       rkw_sub, rkw_super, 
                       rkw_tab, rkw_title, rkw_trleft, rkw_trowd, rkw_trrh, 
-                      rkw_ul, rkw_ulnone, rkw_up
+                      rkw_ul, rkw_ulnone, rkw_up, rkw_unicode
                      };
  private:
    class keyword_map : public std::map<std::string, keyword_type>
