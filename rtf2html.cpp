@@ -56,6 +56,7 @@ int main(int argc, char **argv)
 {
    try
    {
+   bool onlybody=false;
    if (argc==2)
    {
       // We do not want to use strcmp here because of compability issues
@@ -74,15 +75,22 @@ int main(int argc, char **argv)
                   <<"   or: "<<PACKAGE<<" -h|--help                  "
                                       <<" - display this help message"<<std::endl;
          return 0;
+      }      
+      if (argv1=="-b" || argv1=="--body")
+      {
+         onlybody=true;
+         argc=0;
       }
    }
    if (argc>3)
    {
       std::cerr<<"Too many arguments! See "<<PACKAGE<<" --help for options"<<std::endl;
       return 1;
-   }
-   std::istream *p_file_in=argc>1?new std::ifstream(argv[1]):&std::cin;
-   std::ostream *p_file_out=argc>2?new std::ofstream(argv[2]):&std::cout;
+   }         
+
+   std::istream *p_file_in= argc>1?new std::ifstream(argv[1]):&std::cin;
+   std::ostream *p_file_out=argc>2?new std::ofstream(argv[2]):&std::cout;   
+
    std::istream &file_in=*p_file_in;
    std::ostream &file_out=*p_file_out;
    file_in.exceptions(std::ios::failbit);
@@ -246,7 +254,7 @@ int main(int argc, char **argv)
                // font table
                case rtf_keyword::rkw_fonttbl: 
                {
-                  font fnt;
+                    font fnt;
                   int font_num;
                   bool full_name=false;
                   bool in_font=false;
@@ -584,11 +592,20 @@ int main(int argc, char **argv)
          par_html.write(*buf_in++);
       }
    }
-   file_out<<"<html>\n<head>\n<STYLE type=\"text/css\">\nbody {padding-left:"
-           <<rint(iMarginLeft/20)<<"pt;width:"<<rint((iDocWidth/20))<<"pt}\n"
-           <<"p {margin-top:0pt;margin-bottom:0pt}\n"<<formatting_options::get_styles()<<"</STYLE>\n"
-           <<"<title>"<<title<<"</title>\n</head>\n"
-           <<"<body>\n"<<html<<"</body>\n</html>";
+
+   if(onlybody)
+   {
+        file_out<<html;
+   }
+   else
+   {
+       file_out<<"<html>\n<head>\n<STYLE type=\"text/css\">\nbody {padding-left:"
+               <<rint(iMarginLeft/20)<<"pt;width:"<<rint((iDocWidth/20))<<"pt}\n"
+               <<"p {margin-top:0pt;margin-bottom:0pt}\n"<<formatting_options::get_styles()<<"</STYLE>\n"
+               <<"<title>"<<title<<"</title>\n</head>\n"
+               <<"<body>\n"<<html<<"</body>\n</html>";
+   }
+
    if (argc>1)
       delete p_file_in;
    if (argc>2)
