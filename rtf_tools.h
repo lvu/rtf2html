@@ -54,6 +54,8 @@ std::string char_by_code(InputIter &iter)
    int code = std::strtol(stmp.c_str(), NULL, 16);
    switch (code)
    {
+      case 0x3f:
+         return std::string();
       case 147:
          return "&ldquo;";
       case 148:
