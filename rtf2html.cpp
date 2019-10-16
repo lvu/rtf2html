@@ -191,10 +191,10 @@ int main(int argc, char **argv)
                      {
                      case '\\':
                      {
-                        rtf_keyword kw(++buf_in);
-                        if (in_title && kw.is_control_char() && kw.control_char() == '\'')
+                        rtf_keyword kw1(++buf_in);
+                        if (in_title && kw1.is_control_char() && kw1.control_char() == '\'')
                            title += char_by_code(buf_in);
-                        else if (kw.keyword()==rtf_keyword::rkw_title)
+                        else if (kw1.keyword()==rtf_keyword::rkw_title)
                            in_title=true;
                         break;
                      }
@@ -224,17 +224,19 @@ int main(int argc, char **argv)
                      {
                      case '\\':
                      {
-                        rtf_keyword kw(++buf_in);
-                        switch (kw.keyword())
+                        rtf_keyword kw1(++buf_in);
+                        switch (kw1.keyword())
                         {
                         case rtf_keyword::rkw_red:
-                           clr.r=kw.parameter();
+                           clr.r=kw1.parameter();
                            break;
                         case rtf_keyword::rkw_green:
-                           clr.g=kw.parameter();
+                           clr.g=kw1.parameter();
                            break;
                         case rtf_keyword::rkw_blue:
-                           clr.b=kw.parameter();
+                           clr.b=kw1.parameter();
+                           break;
+                        default:
                            break;
                         }
                         break;
@@ -264,20 +266,20 @@ int main(int argc, char **argv)
                      {
                      case '\\':
                      {
-                        rtf_keyword kw(++buf_in);
-                        if (kw.is_control_char() && kw.control_char()=='*')
+                        rtf_keyword kw1(++buf_in);
+                        if (kw1.is_control_char() && kw1.control_char()=='*')
                            skip_group(buf_in);
                         else
-                           switch (kw.keyword())
+                           switch (kw1.keyword())
                            {
                            case rtf_keyword::rkw_f:
-                              font_num=kw.parameter();
+                              font_num=kw1.parameter();
                               break;
                            case rtf_keyword::rkw_fprq:
-                              fnt.pitch=kw.parameter();
+                              fnt.pitch=kw1.parameter();
                               break;
                            case rtf_keyword::rkw_fcharset:
-                              fnt.charset=kw.parameter();
+                              fnt.charset=kw1.parameter();
                               break;
                            case rtf_keyword::rkw_fnil:
                               fnt.family=font::ff_none;
@@ -296,6 +298,8 @@ int main(int argc, char **argv)
                               break;
                            case rtf_keyword::rkw_fdecor:
                               fnt.family=font::ff_fantasy;
+                              break;
+                           default:
                               break;
                            }
                         break;
@@ -479,6 +483,7 @@ int main(int argc, char **argv)
                case rtf_keyword::rkw_trowd: 
                   CurCellDefs=CellDefsList.insert(CellDefsList.end(), 
                                                   table_cell_defs());
+                  // fall through
                case rtf_keyword::rkw_row:
                   if (!trCurRow->Cells.empty())
                   {
@@ -556,6 +561,8 @@ int main(int argc, char **argv)
                   break;
                case rtf_keyword::rkw_margl:
                   iMarginLeft=kw.parameter();
+                  break;
+               default:
                   break;
                }
             }
